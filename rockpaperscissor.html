@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rock paper scissor</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: green;
+            color: white;
+            height: 100vh;
+        }
+        #score{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 20vh;
+        }
+        #card{
+            /* position: absolute; */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            /* top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%); */
+        }
+        #restart{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button{
+            background-color: black;
+            color: white;
+            padding: 10px;
+            width: 100px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        #player_hand{
+            transform: rotateY(180deg);
+        }
+        /* img{
+            animation: shake 2s  ease;
+        } */
+        @keyframes shake{
+            0%{
+                transform: translateY(0px) rotateY(180deg);
+            }
+            15%{
+                transform: translateY(-50px) rotateY(180deg);
+            }
+            25%{
+                transform: translateY(0px) rotateY(180deg);
+            }
+            35%{
+                transform: translateY(-50px) rotateY(180deg);
+            }
+            50%{
+                transform: translateY(0px) rotateY(180deg);
+            }
+            65%{
+                transform: translateY(-50px) rotateY(180deg);
+            }
+            75%{
+                transform: translateY(0px) rotateY(180deg);
+            }
+            85%{
+                transform: translateY(-50px) rotateY(180deg);
+            }
+            100%{
+                transform: translateY(0px) rotateY(180deg);
+            }
+        }
+        @keyframes shake_comp{
+            0%{
+                transform: translateY(0px) ;
+            }
+            15%{
+                transform: translateY(-50px);
+            }
+            25%{
+                transform: translateY(0px);
+            }
+            35%{
+                transform: translateY(-50px);
+            }
+            50%{
+                transform: translateY(0px);
+            }
+            65%{
+                transform: translateY(-50px);
+            }
+            75%{
+                transform: translateY(0px);
+            }
+            85%{
+                transform: translateY(-50px);
+            }
+            100%{
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="score">
+        <div id="player">Player : <span id='ps'>0</span></div>
+        <div id="computer">Computer :  <span id='cs'>0</span></div>
+    </div>
+    
+    <div id="card">
+        <h2>Choose an option</h2>
+        <div id="hands">
+            <img  id="player_hand" src="rock.png">
+            <img id="computer_hand" src="rock.png">
+        </div>
+        <div id="buttons">
+            <button id="rock">rock</button>
+            <button id="paper">paper</button>
+            <button id="scissor">scissor</button>
+        </div>
+    </div>
+    <div id='restart'>
+        <button id="start">Let's play</button>
+    </div>
+
+
+
+
+
+
+    <script>
+        var restart=document.getElementById('restart');
+        var card=document.getElementById('card');
+        document.getElementById('start').addEventListener('click',() => {
+            card.style.display='flex';
+            restart.style.display='none';
+        })
+        
+
+
+
+        var rock=document.getElementById('rock');
+        var paper=document.getElementById('paper');
+        var scissor=document.getElementById('scissor');
+        var player_hand=document.getElementById('player_hand');
+        var computer_hand=document.getElementById('computer_hand');
+        var img_choices=['rock.png','paper.png','scissors.png']
+        var choices=['rock','paper','scissors'];
+        var player_score=document.getElementById('ps');
+        var computer_score=document.getElementById('cs');
+        var ps=0;
+        var cs=0;
+        player_hand.addEventListener('animationend',()=>{player_hand.style.animation='';});
+        computer_hand.addEventListener('animationend',()=>{computer_hand.style.animation='';});
+        rock.addEventListener('click',() =>{
+            // alert("i'm rock");
+            player_hand.style.animation="shake 2s ease";
+            computer_hand.style.animation="shake_comp 2s ease";
+            setTimeout(() => {
+                player_hand.src='rock.png';
+            var index= Math.floor(Math.random()*choices.length);
+            computer_hand.src=img_choices[index];
+            check_winner('rock',choices[index]);
+            }, 2000);
+            
+        } );
+        paper.addEventListener('click',() =>{
+            // alert("i'm rock");
+            player_hand.style.animation="shake 2s ease";
+            computer_hand.style.animation="shake_comp 2s ease";
+            setTimeout(() => {
+                player_hand.src='paper.png';
+            var index= Math.floor(Math.random()*choices.length);
+            computer_hand.src=img_choices[index];
+            check_winner('paper',choices[index]);
+            }, 2000);
+           
+        } );
+        scissor.addEventListener('click',() =>{
+            // alert("i'm rock");
+            player_hand.style.animation="shake 2s ease";
+            computer_hand.style.animation="shake_comp 2s ease";
+            setTimeout(() => {
+                player_hand.src='scissors.png';
+            var index= Math.floor(Math.random()*choices.length);
+            computer_hand.src=img_choices[index];
+            check_winner('scissors',choices[index]);
+            }, 2000);
+            
+        } );
+        var h2=document.getElementsByTagName('h2');
+        function check_winner(player,computer)
+        {
+           
+            // console.log(player,computer);
+            if(player=='rock'){
+                if(computer=='rock'){
+                    console.log("tie");
+                    h2[0].innerHTML='game is draw';
+                }
+                else if(computer=='paper'){
+                    console.log("computer is the winner");
+                    h2[0].innerHTML='computer is the winner';
+                    cs++;
+                    update_score();
+
+                }
+                else{
+                    console.log("player is the winner");
+                    h2[0].innerHTML='player is the winner';
+                    ps++;
+                    update_score();
+                }
+            }
+            if(player=='paper'){
+                if(computer=='rock'){
+                    console.log("player is the winner");
+                    h2[0].innerHTML='player is the winner';
+                    ps++;
+                    update_score();
+                }
+                else if(computer=='paper'){
+                    console.log("tie");
+                    h2[0].innerHTML='game is draw';
+                }
+                else{
+                    console.log("computer");
+                    h2[0].innerHTML='computer is the winner';
+                    cs++;
+                    update_score();
+                }
+            }
+            if(player=='scissors'){
+                if(computer=='rock'){
+                    console.log("computer");
+                    h2[0].innerHTML='computer is the winner';
+                    cs++;
+                    update_score();
+                }
+                else if(computer=='paper'){
+                    console.log("player");
+                    h2[0].innerHTML='player is the winner';
+                    ps++;
+                    update_score();
+                }
+                else{
+                    console.log('tie');
+                    h2[0].innerHTML='game is draw';
+                }
+            }
+        }
+        function update_score(){
+            player_score.innerHTML=ps;
+            computer_score.innerHTML=cs;
+        }
+    </script>
+</body>
+</html>
